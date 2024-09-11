@@ -9,7 +9,7 @@ using ProductsWebApi.Services;
 namespace ProductsWebApi.Controllers
 {
   [ApiController]
-  [Route("[controller]")]
+  [Route("product")]
   public class ProductController : ControllerBase
   {
 
