@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductsWebApi.Dal;
 using ProductsWebApi.Models;
+using ProductsWebApi.Services;
 
 namespace ProductsWebApi.Controllers
 {
@@ -84,6 +85,26 @@ namespace ProductsWebApi.Controllers
       return Ok();
     }
 
+    /// <summary>
+    /// find the store with the maximum numbr of products
+    /// </summary>
+    /// <param name="storeService"></param>
+    /// <returns></returns>
+    [HttpGet("with-max-products")]
+    public async Task<ActionResult<GetWithMaxProdDto>> GetWithMaxProdAsync([FromServices] IStoreService storeService)
+    {
+      var (store, productCount) = await storeService.GetWithMaxProductsAsync();
+
+      if(store == null) return NotFound();
+
+      GetWithMaxProdDto output = new()
+      {
+        ProductCount = productCount,
+        Store = _mapper.Map<StoreOutputDto>(store)
+      };
+
+      return Ok(output);
+    }
 
   }
 }

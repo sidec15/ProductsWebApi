@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductsWebApi.Dal;
 using ProductsWebApi.Models;
+using ProductsWebApi.Services;
 
 namespace ProductsWebApi.Controllers
 {
@@ -85,6 +86,12 @@ namespace ProductsWebApi.Controllers
       return Ok(product);
     }
 
+    /// <summary>
+    /// Move the product to a different store
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPut("{id}/move")]
     public async Task<IActionResult> MoveAsync([FromRoute] Guid id,[FromBody] ProductModeInputDto dto)
     {

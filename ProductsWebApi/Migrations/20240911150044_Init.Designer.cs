@@ -12,7 +12,7 @@ using ProductsWebApi;
 namespace ProductsWebApi.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20240911132749_Init")]
+    [Migration("20240911150044_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -53,9 +53,6 @@ namespace ProductsWebApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
