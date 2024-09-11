@@ -26,12 +26,16 @@ namespace ProductsWebApi.Controllers
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] StoreInputDto dto)
     {
-      var store = _mapper.Map<Store>(dto);
+      var entity = _mapper.Map<Store>(dto);
 
-      _dbContext.Stores.Add(store);
+      _dbContext.Stores.Add(entity);
       await _dbContext.SaveChangesAsync();
 
-      return Created();
+      return CreatedAtAction(
+          nameof(GetByIdAsync),
+          new { id = entity.Id.ToString() },  // Ensure you pass the correct route values
+          entity.Id                // Optionally, you can return the entity or some relevant data
+      );
     }
 
     [HttpGet]
@@ -56,10 +60,28 @@ namespace ProductsWebApi.Controllers
         .ProjectTo<StoreOutputDto>(_mapper.ConfigurationProvider)
         .FirstOrDefaultAsync();
 
-      if(store == null)
+      if (store == null)
         return NotFound();
 
       return Ok(store);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
+    {
+
+      var store = await _dbContext
+        .Stores
+        .Where(x => x.Id == id)
+        .FirstOrDefaultAsync();
+
+      if (store != null)
+      {
+        _dbContext.Stores.Remove(store);
+        await _dbContext.SaveChangesAsync();
+      }
+
+      return Ok();
     }
 
 

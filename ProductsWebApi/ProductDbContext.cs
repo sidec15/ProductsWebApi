@@ -15,6 +15,12 @@ namespace ProductsWebApi
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+      modelBuilder.Entity<Product>()
+        .Property(x => x.Name)
+        .IsRequired()
+        ;
+
       modelBuilder.Entity<Product>()
           .HasOne(p => p.Store)
           .WithMany(s => s.Products)

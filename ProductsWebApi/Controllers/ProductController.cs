@@ -26,12 +26,16 @@ namespace ProductsWebApi.Controllers
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] ProductInputDto productDto)
     {
-      var product = _mapper.Map<Product>(productDto);
+      var entity = _mapper.Map<Product>(productDto);
 
-      _dbContext.Products.Add(product);
+      _dbContext.Products.Add(entity);
       await _dbContext.SaveChangesAsync();
 
-      return Created();
+      return CreatedAtAction(
+          nameof(GetByIdAsync),
+          new { id = entity.Id.ToString() },  // Ensure you pass the correct route values
+          entity.Id                // Optionally, you can return the entity or some relevant data
+          );
     }
 
     [HttpGet]
@@ -60,6 +64,37 @@ namespace ProductsWebApi.Controllers
         return NotFound();
 
       return Ok(product);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
+    {
+
+      var product = await _dbContext
+        .Products
+        .Where(x => x.Id == id)
+        .FirstOrDefaultAsync();
+
+      if (product != null)
+      {
+        _dbContext.Products.Remove(product);
+        await _dbContext.SaveChangesAsync();
+      }
+
+
+      return Ok(product);
+    }
+
+    [HttpPut("{id}/move")]
+    public async Task<IActionResult> MoveAsync([FromRoute] Guid id,[FromBody] ProductModeInputDto dto)
+    {
+      var product = await _dbContext.Products.FindAsync(id);
+
+      product.StoreId = dto.StoreId;
+      
+      await _dbContext.SaveChangesAsync();
+
+      return Ok();
     }
 
   }
