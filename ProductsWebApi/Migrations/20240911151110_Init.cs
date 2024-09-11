@@ -47,6 +47,12 @@ namespace ProductsWebApi.Migrations
                 name: "IX_Products_StoreId",
                 table: "Products",
                 column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stores_Name",
+                table: "Stores",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />

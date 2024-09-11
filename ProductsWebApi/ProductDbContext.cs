@@ -21,6 +21,11 @@ namespace ProductsWebApi
         .IsRequired()
         ;
 
+      modelBuilder.Entity<Store>()
+        .HasIndex(x => x.Name)
+        .IsUnique()
+        ;
+
       modelBuilder.Entity<Product>()
           .HasOne(p => p.Store)
           .WithMany(s => s.Products)

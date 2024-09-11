@@ -56,6 +56,9 @@ namespace ProductsWebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Stores");
                 });
 

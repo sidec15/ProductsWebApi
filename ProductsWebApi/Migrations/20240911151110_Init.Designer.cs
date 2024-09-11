@@ -12,7 +12,7 @@ using ProductsWebApi;
 namespace ProductsWebApi.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20240911150044_Init")]
+    [Migration("20240911151110_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -58,6 +58,9 @@ namespace ProductsWebApi.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Stores");
                 });
